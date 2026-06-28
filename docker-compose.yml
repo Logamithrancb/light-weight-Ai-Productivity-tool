@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend/vosk_model:/app/vosk_model
+      - ./backend/productivity.db:/app/productivity.db
+      - ./ml/saved_models:/ml/saved_models
+    environment:
+      - PORT=8000
+      - HOST=0.0.0.0
+    restart: always
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    restart: always
